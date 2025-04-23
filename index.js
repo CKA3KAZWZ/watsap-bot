@@ -55,4 +55,27 @@ app.post("/webhook", async (req, res) => {
   res.sendStatus(200);
 });
 
+const registerWebhook = async () => {
+  try {
+    const response = await axios.patch(
+      "https://api.wazzup24.com/v3/webhooks",
+      {
+        url: "https://watsap-bot.vercel.app/webhook"
+      },
+      {
+        headers: {
+          Authorization: process.env.WAZZUP_API_KEY,
+          "Content-Type": "application/json"
+        }
+      }
+    );
+
+    console.log("✅ Webhook зарегистрирован:", response.data);
+  } catch (error) {
+    console.error("❌ Ошибка при регистрации Webhook:", error.response?.data || error.message);
+  }
+};
+
+registerWebhook();
+
 app.listen(PORT, () => console.log(`Bot запущен на порту ${PORT}`));
